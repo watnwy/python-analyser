@@ -36,7 +36,8 @@ profiles:
     value: true
 - name: prod
   activation:
-  - env: PROD=true
+  - command: run
+  - command: build
   patches:
   - op: replace
     path: /build/artifacts/0/docker/target
