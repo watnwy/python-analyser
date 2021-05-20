@@ -27,6 +27,13 @@ profiles:
   - op: replace
     path: /build/local/push
     value: true
+- name: push
+  activation:
+  - env: PUSH=true
+  patches:
+  - op: replace
+    path: /build/local/push
+    value: true
 - name: prod
   activation:
   - env: PROD=true

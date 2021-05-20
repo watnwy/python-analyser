@@ -44,11 +44,11 @@ jobs:
       - name: Build the tagged images
         env:
           DOCKER_BUILDKIT: 1
-        run: skaffold build
+        run: PUSH=true skaffold build
       - name: Build the latest images
         env:
           DOCKER_BUILDKIT: 1
-        run: LATEST=true skaffold build
+        run: LATEST=true PUSH=true skaffold build
       - name: Check out the GitOPS repo
         uses: actions/checkout@v2
         with:
