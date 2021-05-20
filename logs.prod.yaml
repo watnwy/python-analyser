@@ -1,0 +1,66 @@
+version: 1
+filters:
+  private_endpoints_filter:
+    "()": analyser.logging.PrivateEndpointsFilter
+formatters:
+  brief:
+    format: '%(message)s'
+  default-with-apm:
+    (): elasticapm.handlers.logging.Formatter
+    fmt: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  access:
+    (): uvicorn.logging.AccessFormatter
+    fmt: '%(asctime)s %(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
+    datefmt: '%Y-%m-%d %H:%M:%S'
+  json:
+    (): pythonjsonlogger.jsonlogger.JsonFormatter
+    reserved_attrs:
+      - args
+      - exc_text
+      - created
+      - filename
+      - funcName
+      - levelno
+      - lineno
+      - msecs
+      - message
+      - msg
+      - pathname
+      - process
+      - processName
+      - relativeCreated
+      - stack_info
+      - thread
+      - threadName
+      - scope
+handlers:
+  console:
+    class : logging.StreamHandler
+    formatter: json
+    level   : INFO
+    stream  : ext://sys.stdout
+  access:
+    formatter: json
+    class: logging.StreamHandler
+    filters:
+      - private_endpoints_filter
+    stream  : ext://sys.stdout
+loggers:
+  watnwy:
+    level: INFO
+  uvicorn:
+    level: INFO
+  uvicorn.error:
+    level: INFO
+  uvicorn.access:
+    level: INFO
+  websockets.protocol:
+    level: ERROR
+  fastapi:
+    level: INFO
+  asyncio:
+    level: ERROR
+root:
+  handlers: [console]
+  level: INFO

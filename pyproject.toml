@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "analyser"
+version = "0.1.0"
+description = "The Watnwy analyser service for the Python ecosystem"
+authors = ["Thomas Erlenbach <thomas.erlenbach@watnwy.com>"]
+include = ["logs.prod.yaml"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.65.1"
+typer = "^0.3.2"
+orjson = "^3.5.2"
+elastic-apm = "^6.1.3"
+python-json-logger = "^2.0.1"
+uvicorn = {extras = ["standard"], version = "^0.13.4"}
+aiohttp = "^3.7.4"
+toml = "^0.10.2"
+aiofiles = "^0.7.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.4"
+pre-commit = "^2.12.1"
+flake8 = "^3.9.2"
+mypy = "^0.812"
+black = "^21.5b1"
+pytest-asyncio = "^0.15.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
