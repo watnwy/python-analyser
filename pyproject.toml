@@ -16,6 +16,7 @@ uvicorn = {extras = ["standard"], version = "^0.13.4"}
 aiohttp = "^3.7.4"
 toml = "^0.10.2"
 aiofiles = "^0.7.0"
+wrapt = "^1.12.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.4"

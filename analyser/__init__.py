@@ -38,4 +38,5 @@ async def run_analyses(project_path: str):
     ]
 
 
+from analyser.packages import pip  # noqa: F401,E402
 from analyser.packages import poetry  # noqa: F401,E402
