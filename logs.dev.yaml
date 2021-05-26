@@ -1,7 +1,7 @@
 version: 1
 filters:
   private_endpoints_filter:
-    "()": analyser.logging.PrivateEndpointsFilter
+    "()": analyser.logging_.PrivateEndpointsFilter
 formatters:
   brief:
     format: '%(message)s'
@@ -15,6 +15,9 @@ formatters:
     fmt: '%(asctime)s %(levelprefix)s %(client_addr)s - "%(request_line)s" %(status_code)s'
     datefmt: '%Y-%m-%d %H:%M:%S'
     use_colors: True
+  analysis:
+    (): uvicorn.logging.DefaultFormatter
+    fmt:  "%(asctime)s - %(name)s - %(levelname)s - %(analyser_id)s > %(message)s"
 handlers:
   console:
     class : logging.StreamHandler
@@ -27,9 +30,17 @@ handlers:
     filters:
       - private_endpoints_filter
     stream  : ext://sys.stdout
+  analysis:
+    formatter: analysis
+    class: logging.StreamHandler
+    stream  : ext://sys.stdout
 loggers:
   watnwy:
     level: DEBUG
+  watnwy.analysis:
+    level: DEBUG
+    handlers: [analysis]
+    propagate: false
   uvicorn:
     level: DEBUG
   uvicorn.error:

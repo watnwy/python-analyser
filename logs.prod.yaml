@@ -1,7 +1,7 @@
 version: 1
 filters:
   private_endpoints_filter:
-    "()": analyser.logging.PrivateEndpointsFilter
+    "()": analyser.logging_.PrivateEndpointsFilter
 formatters:
   brief:
     format: '%(message)s'

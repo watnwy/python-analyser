@@ -3,8 +3,7 @@ import traceback
 from fastapi import FastAPI, status
 from fastapi.responses import ORJSONResponse
 
-from analyser import models
-from analyser.packages import poetry
+from analyser import models, run_analyses
 
 app = FastAPI()
 
@@ -31,5 +30,5 @@ def ready():
 async def do_analysis(
     analysis_request: models.PerformAnalysisRequest,
 ) -> models.AnalysisEcoSystemResult:
-    objects = await poetry.objects_from_packages(analysis_request.path)
+    objects = await run_analyses(analysis_request.path)
     return models.AnalysisEcoSystemResult(name="python", objects=objects)

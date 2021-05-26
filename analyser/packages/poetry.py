@@ -1,7 +1,6 @@
 import asyncio
 import concurrent.futures
 import glob
-import logging
 from functools import partial
 from itertools import chain
 from pathlib import Path
@@ -11,9 +10,8 @@ import aiofiles
 import aiohttp
 import toml
 
-from analyser import models
-
-logger = logging.getLogger("watnwy")
+from analyser import analysis, models
+from analyser.logging_ import analysis_logger
 
 PYPI_VERSIONS_URI = "https://pypi.org/pypi/{package}/json"
 
@@ -31,7 +29,9 @@ async def get_version_from_filename(
         response_json = await response.json()
         releases = response_json["releases"]
 
-        logger.debug("looking for version corresponding to file %s", filename)
+        analysis_logger().debug(
+            "looking for version corresponding to file %s", filename
+        )
 
         return next(
             (
@@ -92,15 +92,16 @@ async def lock_file_to_objects(lock_file: str) -> List[models.AnalysisObject]:
     ]
 
 
+@analysis
 async def objects_from_packages(path: str) -> List[models.AnalysisObject]:
     with concurrent.futures.ThreadPoolExecutor() as pool:
         lock_files = await asyncio.get_running_loop().run_in_executor(
             pool, partial(glob.glob, f"{path}/**/poetry.lock", recursive=True)
         )
-        logger.debug(f"{lock_files=}")
+        analysis_logger().debug(f"{lock_files=}")
 
     objects = await asyncio.gather(
         *(lock_file_to_objects(str(lock_file)) for lock_file in lock_files)
     )
-    logger.debug(f"{objects=}")
+    analysis_logger().debug(f"{objects=}")
     return list(chain(*objects))

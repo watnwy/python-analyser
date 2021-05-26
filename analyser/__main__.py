@@ -4,7 +4,7 @@ from pathlib import Path
 
 import typer
 
-from analyser.packages import poetry
+from analyser import run_analyses
 
 app = typer.Typer()
 
@@ -15,7 +15,6 @@ logger.setLevel(logging.DEBUG)
 class CLIHandler(logging.Handler):
     COLORS = {
         logging.DEBUG: "blue",
-        logging.INFO: "green",
         logging.WARNING: "yellow",
         logging.ERROR: "red",
         logging.CRITICAL: "red",
@@ -34,6 +33,24 @@ class CLIHandler(logging.Handler):
         )
 
 
+class CLIAnalysisHandler(CLIHandler):
+    ANALYSIS_COLORS = ["bright_green", "bright_blue", "bright_magenta", "bright_cyan"]
+
+    __slots__ = "no_color"
+
+    def emit(self, record: logging.LogRecord) -> None:
+        if record.levelno >= logging.WARNING:
+            return super().emit(record)
+        typer.secho(
+            self.format(record),
+            fg=self.ANALYSIS_COLORS[
+                int(record.__dict__.get("analyser_id", 0)) % len(self.COLORS)
+            ]
+            if not self.no_color
+            else None,
+        )
+
+
 def logging_setup(debug: bool, no_color: bool):
     ch = CLIHandler(no_color=no_color)
 
@@ -48,6 +65,20 @@ def logging_setup(debug: bool, no_color: bool):
     ch.setFormatter(formatter)
 
     logger.addHandler(ch)
+
+    analysis_logger = logging.getLogger("watnwy.analysis")
+    analysis_logger.propagate = False
+    analyser_handler = CLIAnalysisHandler(no_color=no_color)
+    if debug:
+        analyser_handler.setLevel(logging.DEBUG)
+    else:
+        analyser_handler.setLevel(logging.INFO)
+    formatter = logging.Formatter(
+        "%(asctime)s - %(name)s - %(levelname)s - %(analyser_id)s > %(message)s"
+    )
+    analyser_handler.setFormatter(formatter)
+
+    analysis_logger.addHandler(analyser_handler)
 
 
 @app.command()
@@ -91,10 +122,18 @@ def analyse(
     if not quiet:
         logging_setup(debug, no_color)
     logger.info(f"Analysing {path}")
-    objects = asyncio.run(poetry.objects_from_packages(str(path)))
-    column_width = max(len(object.name) for object in objects)
+
+    objects = asyncio.run(run_analyses(str(path)))
+
+    if objects:
+        column_width = max(len(object.name) for object in objects)
+    else:
+        column_width = 10
     for object in sorted(objects, key=lambda object: object.name):
-        typer.echo(f"{object.name:{column_width}} - {object.version}")
+        typer.echo(
+            f"{object.name:{column_width}} - {object.version} "
+            f"(With versions provider: {len(object.versions_providers) > 0})"
+        )
 
 
 app()
