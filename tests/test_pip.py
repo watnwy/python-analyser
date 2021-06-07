@@ -15,6 +15,6 @@ async def test_pip() -> None:
 
     assert len(objects) == 2
     assert objects[0].name == "click"
-    assert objects[0].version is None
+    assert None in objects[0].versions
     assert objects[1].name == "fastapi"
-    assert objects[1].version == "0.65.1"
+    assert "0.65.1" in objects[1].versions

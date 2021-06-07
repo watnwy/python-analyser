@@ -19,7 +19,7 @@ async def test_poetry(poetry_project) -> None:
     # 3. Our package and only our package should be found
     assert len(objects) == 1
     assert objects[0].name == "fastapi"
-    assert objects[0].version == "0.65.0"
+    assert "0.65.0" in objects[0].versions
     assert objects[0].versions_providers is not None
     assert len(objects[0].versions_providers) == 1
     assert isinstance(

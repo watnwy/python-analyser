@@ -85,7 +85,7 @@ def pip_package_to_object(pip_package: str) -> Optional[models.AnalysisObject]:
 
     return models.AnalysisObject(
         name=package,
-        version=version,
+        versions=[version],
         versions_providers=[
             models.PypiReleasesVersionsProvider(
                 type=models.VersionsProviderTypes.PypiReleases.value,

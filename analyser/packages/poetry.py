@@ -81,7 +81,7 @@ async def lock_file_to_objects(lock_file: str) -> List[models.AnalysisObject]:
     return [
         models.AnalysisObject(
             name=package,
-            version=version,
+            versions=[version],
             versions_providers=[
                 models.PypiReleasesVersionsProvider(
                     type="PypiReleases", package_name=package

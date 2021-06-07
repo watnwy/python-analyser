@@ -42,7 +42,7 @@ VersionsProvider = Union[PypiReleasesVersionsProvider, GithubReleasesVersionsPro
 
 class AnalysisObject(BaseModelOrjson):
     name: str
-    version: Optional[str]
+    versions: List[Optional[str]]
     versions_providers: Optional[List[VersionsProvider]] = Field(default=None)
 
 
