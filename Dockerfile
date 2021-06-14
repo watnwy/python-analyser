@@ -10,6 +10,7 @@ ENV PORT 8080
 ENV APP analyser.api:app
 COPY pyproject.toml .
 COPY poetry.lock .
+RUN poetry run python -m pip install -U pip==21.1.2
 RUN poetry install
 COPY . .
 ENTRYPOINT poetry run uvicorn ${APP} --reload --host 0.0.0.0 --port ${PORT} --log-config logs.dev.yaml
@@ -26,6 +27,7 @@ ENV PORT 8080
 ENV APP analyser.api:app
 RUN apt-get update && apt-get install -y git \
     && rm -rf /var/lib/apt/lists/*
+RUN python -m pip install -U pip==21.1.2
 COPY --from=builder-prod /usr/src/app/dist/*.whl /tmp/
 RUN python -m pip install /tmp/*.whl
 ENTRYPOINT python -m uvicorn ${APP} --host 0.0.0.0 --port ${PORT} --log-config /usr/local/lib/python3.9/site-packages/logs.prod.yaml
