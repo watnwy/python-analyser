@@ -131,7 +131,7 @@ def analyse(
         column_width = 10
     for object in sorted(objects, key=lambda object: object.name):
         typer.echo(
-            f"{object.name:{column_width}} - {object.version} "
+            f"{object.name:{column_width}} - {object.versions} "
             f"(With versions provider: {len(object.versions_providers) > 0})"
         )
 
