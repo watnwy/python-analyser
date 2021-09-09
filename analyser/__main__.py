@@ -123,17 +123,24 @@ def analyse(
         logging_setup(debug, no_color)
     logger.info(f"Analysing {path}")
 
-    objects = asyncio.run(run_analyses(str(path)))
+    results = asyncio.run(run_analyses(str(path)))
+    objects = [object for result in results for object in result.objects]
 
     if objects:
-        column_width = max(len(object.name) for object in objects)
+        column_width = max(
+            len(f"{result.name}/{object.name}")
+            for result in results
+            for object in result.objects
+        )
     else:
         column_width = 10
-    for object in sorted(objects, key=lambda object: object.name):
-        typer.echo(
-            f"{object.name:{column_width}} - {object.versions} "
-            f"(With versions provider: {len(object.versions_providers) > 0})"
-        )
+    for result in sorted(results, key=lambda result: result.name):
+        for object in sorted(result.objects, key=lambda object: object.name):
+            obj = f"{result.name}/{object.name}"
+            typer.echo(
+                f"{obj:{column_width}} - {object.versions} "
+                f"(With versions provider: {len(object.versions_providers or []) > 0})"
+            )
 
 
 app()

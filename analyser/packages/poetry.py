@@ -92,7 +92,7 @@ async def lock_file_to_objects(lock_file: str) -> List[models.AnalysisObject]:
     ]
 
 
-@analysis
+@analysis(ecosystem="python")
 async def objects_from_packages(path: str) -> List[models.AnalysisObject]:
     with concurrent.futures.ThreadPoolExecutor() as pool:
         lock_files = await asyncio.get_running_loop().run_in_executor(

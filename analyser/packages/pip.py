@@ -199,7 +199,7 @@ async def objects_from_setup_pys_requirements(
     return await set_versions_providers(objects_from_install_requires)
 
 
-@analysis
+@analysis(ecosystem="python")
 async def objects_from_all_setup_pys_requirements(
     project_path: str,
 ) -> List[models.AnalysisObject]:

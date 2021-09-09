@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "analyser"
 version = "0.1.0"
-description = "The Watnwy analyser service for the Python ecosystem"
+description = "The Watnwy Python analyser service"
 authors = ["Thomas Erlenbach <thomas.erlenbach@watnwy.com>"]
 include = ["logs.prod.yaml"]
 

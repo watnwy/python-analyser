@@ -58,7 +58,7 @@ jobs:
       - name: Bump the used image
         run: |
           export TAG=prod-`echo $GITHUB_SHA | cut -c1-7`
-          yq e ".watnwy.ecosystems.python.image = \"233632450084.dkr.ecr.eu-west-1.amazonaws.com/watnwy-python-analyser:${TAG}\"" -i watnwy/values-prod.yaml
+          yq e ".watnwy.analysers.python.image = \"233632450084.dkr.ecr.eu-west-1.amazonaws.com/watnwy-python-analyser:${TAG}\"" -i watnwy/values-prod.yaml
           git config --global user.email "github-actions@watnwy.com"
           git config --global user.name "GithubActions"
           git add watnwy/values-prod.yaml

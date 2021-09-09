@@ -1,4 +1,5 @@
 import traceback
+from typing import List
 
 from fastapi import FastAPI, status
 from fastapi.responses import ORJSONResponse
@@ -26,9 +27,8 @@ def ready():
     return {"status": "ready"}
 
 
-@app.post("/analysis", response_model=models.AnalysisEcoSystemResult)
+@app.post("/analysis", response_model=List[models.AnalysisEcoSystemResult])
 async def do_analysis(
     analysis_request: models.PerformAnalysisRequest,
-) -> models.AnalysisEcoSystemResult:
-    objects = await run_analyses(analysis_request.path)
-    return models.AnalysisEcoSystemResult(name="python", objects=objects)
+) -> List[models.AnalysisEcoSystemResult]:
+    return await run_analyses(analysis_request.path)

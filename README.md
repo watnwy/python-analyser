@@ -62,21 +62,24 @@ Once you've got everything set up, you can use the CLI to run a local analysis a
 ```
 poetry run python -m analyser -q .
 
-aiofiles           - 0.7.0
-aiohttp            - 3.7.4.post0
-black              - 21.5b1
-elastic-apm        - 6.1.3
-fastapi            - 0.65.1
-flake8             - 3.9.2
-mypy               - 0.812
-orjson             - 3.5.2
-pre-commit         - 2.12.1
-pytest             - 6.2.4
-pytest-asyncio     - 0.15.1
-python-json-logger - 2.0.1
-toml               - 0.10.2
-typer              - 0.3.2
-uvicorn            - 0.13.4
+python/click              - [None] (With versions provider: True)
+python/fastapi            - ['0.65.1'] (With versions provider: True)
+python/aiofiles           - ['0.7.0'] (With versions provider: True)
+python/aiohttp            - ['3.7.4.post0'] (With versions provider: True)
+python/black              - ['21.5b1'] (With versions provider: True)
+python/elastic-apm        - ['6.1.3'] (With versions provider: True)
+python/fastapi            - ['0.65.1'] (With versions provider: True)
+python/flake8             - ['3.9.2'] (With versions provider: True)
+python/mypy               - ['0.812'] (With versions provider: True)
+python/orjson             - ['3.5.2'] (With versions provider: True)
+python/pre-commit         - ['2.13.0'] (With versions provider: True)
+python/pytest             - ['6.2.4'] (With versions provider: True)
+python/pytest-asyncio     - ['0.15.1'] (With versions provider: True)
+python/python-json-logger - ['2.0.1'] (With versions provider: True)
+python/toml               - ['0.10.2'] (With versions provider: True)
+python/typer              - ['0.3.2'] (With versions provider: True)
+python/uvicorn            - ['0.13.4'] (With versions provider: True)
+python/wrapt              - ['1.12.1'] (With versions provider: True)
 ```
 
 ### Run and call the service
@@ -110,22 +113,25 @@ content-type: application/json
 date: Thu, 20 May 2021 08:47:12 GMT
 server: uvicorn
 
-{
-    "name": "python",
-    "objects": [
-        {
-            "name": "aiofiles",
-            "version": "0.7.0",
-            "versions_providers": [
-                {
-                    "package_name": "aiofiles",
-                    "type": "PypiReleases"
-                }
-            ]
-        },
-        ...
-    ]
-}
+[
+    {
+        "name": "python",
+        "objects": [
+            {
+                "name": "aiofiles",
+                "version": "0.7.0",
+                "versions_providers": [
+                    {
+                        "package_name": "aiofiles",
+                        "type": "PypiReleases"
+                    }
+                ]
+            },
+            ...
+        ]
+    },
+    ...
+]
 ```
 
 ## Analyses
