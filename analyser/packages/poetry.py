@@ -54,21 +54,27 @@ async def lock_file_to_objects(lock_file: str) -> List[models.AnalysisObject]:
         pyproject_context = toml.loads(content)
 
     non_transitive_packages = set(
-        pyproject_context.get("tool", {})
-        .get("poetry", {})
-        .get("dependencies", {})
-        .keys()
+        map(
+            str.lower,
+            pyproject_context.get("tool", {})
+            .get("poetry", {})
+            .get("dependencies", {})
+            .keys(),
+        )
     ) | set(
-        pyproject_context.get("tool", {})
-        .get("poetry", {})
-        .get("dev-dependencies", {})
-        .keys()
+        map(
+            str.lower,
+            pyproject_context.get("tool", {})
+            .get("poetry", {})
+            .get("dev-dependencies", {})
+            .keys(),
+        )
     )
 
     filtered_metadata_files = {
         package: files
         for package, files in lock_content["metadata"]["files"].items()
-        if package in non_transitive_packages
+        if package.lower() in non_transitive_packages
     }
 
     versions = await asyncio.gather(
