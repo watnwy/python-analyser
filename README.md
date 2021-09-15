@@ -1,6 +1,6 @@
 # python-analyser
 
-This is the source code of the [Watnwy](https://watnwy.com) analyser service for the Python ecosystem.
+This is the source code of the [Watnwy](https://watnwy.com) Python analyser service.
 
 The [Watnwy](https://watnwy.com) platform aims at solving problems like how to make sure things remain consistent over time in large codebases with people coming and leaving the team/organization/company quite often, with a technology landscape that evolves at a very fast pace ([more details in our documentation](https://doc.watnwy.com/)). One possible solution is to collaboratively state on **what should [not] be used and why** on an online platform, and to **connect it with your codebase** to make sure things are aligned. The Watnwy analysers are what makes this connection possible.
 
@@ -136,10 +136,9 @@ server: uvicorn
 
 ## Analyses
 
-For the time being, we only get to detect the Python packages added via Poetry, and only if the `poetry.lock`.
- file is under version control.
-
-We plan on automatically detecting packages added via `pip` (requirements.txt), `pipenv`, `pip-compile` soon.
+For the time being, this analyser gets to detect:
+* the Python packages added via Poetry, only if the `poetry.lock` file is under version control
+* the Python packages added via `setup.py`
 
 ## Contributing
 
